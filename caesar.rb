@@ -1,3 +1,9 @@
+require 'pry-byebug'
+
+
+
+
+
 def caesar_cipher(string, shift=0)
 
   # Classes that have just one value, so we can use .to_s
@@ -14,25 +20,26 @@ def caesar_cipher(string, shift=0)
 
   # letters range
   # the letter z is a special case
-  down_range = 'a'..'y'
-  up_range = 'A'..'Y'
+  down_range = 'a'..'z'
+  up_range = 'A'..'Z'
 
   new_string = ''
 
+  # Quando fazemos num%2, o resto n'ao e o codigo que a letra deveria ter,
+  # mas sim quantas letras a partir da base teremos, ou seja, de quanto vai ser o shift
+
   string.each_char do |letra|
 
-    if down_range.include?(letra) || up_range.include?(letra)
-      nova_letra = (letra.ord + shift).chr
+    base_char = down_range.include?(letra)? 'a':'A'
 
-    elsif (letra == 'z') || (letra == 'Z')
-      nova_letra = (letra.ord - 25).chr
-      
+    if down_range.include?(letra) || up_range.include?(letra)
+      nova_letra = (base_char.ord+((letra.ord - base_char.ord + shift)%26)).chr
+    else
+      nova_letra = letra
     end
 
     new_string << nova_letra
-
   end
-  puts "#{string} ===> #{new_string}"
   new_string
 end
 
@@ -61,6 +68,6 @@ def any_to_string(string)
   end
 end
 
-p caesar_cipher('zoi', 1)
+puts "caesar_cipher(`What a string!`, 5) is #{caesar_cipher('What a string!', 5)}"
 
-
+puts "caesar_cipher(`What a string!`, 5) should be ''''Bmfy f xywnsl!''''"
